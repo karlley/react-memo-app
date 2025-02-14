@@ -1,42 +1,68 @@
-import './App.css';
+import { useCallback, useState } from "react";
+import "./App.css";
 
-const dummyMemo = [
-  { id: 1, content: 'title\n text text text'},
-  { id: 2, content: 'title\n text text text'},
-  { id: 3, content: 'title\n text text text'}
-]
+const dummyMemos = [
+  { id: 1, content: "memo1\n text text text" },
+  { id: 2, content: "memo2\n text text text" },
+  { id: 3, content: "memo3\n text text text" },
+];
 
-function List({dummyMemo}) {
+function List({ dummyMemos, selected, onSelected }) {
+  const extractTitle = (memo) => memo.content.split("\n")[0];
+  const applySelectedClass = (memo) =>
+    memo.id - 1 === selected ? "selected" : "";
   return (
-      <div className="list">
-        <ul>
-          {dummyMemo.map(memo => (
-            <li key={memo.id}><a href="">{memo.content.split('\n')[0]}</a></li>
-          ))}
-          <li><a href="">+</a></li>
-        </ul>
+    <div className="list">
+      <ul>
+        {dummyMemos.map((memo) => (
+          <li
+            key={memo.id}
+            className={applySelectedClass(memo)}
+            onClick={() => onSelected(memo.id - 1)}
+          >
+            {extractTitle(memo)}
+          </li>
+        ))}
+        <li>+</li>
+      </ul>
+    </div>
+  );
+}
+
+function Detail({ dummyMemos, selected }) {
+  const memo = dummyMemos[selected];
+  return (
+    <div className="detail">
+      <input value={memo.content} />
+      <div className="action">
+        <button className="update">更新</button>
+        <button className="delete">削除</button>
       </div>
-  )
+    </div>
+  );
 }
 
 function App() {
+  const [selected, setSelected] = useState(0);
   return (
     <div className="app">
       <div className="index">
         <p>一覧</p>
-        <List dummyMemo={dummyMemo} />
+        <List
+          dummyMemos={dummyMemos}
+          selected={selected}
+          onSelected={setSelected}
+        />
       </div>
       <div className="edit">
         <p>編集</p>
         <div className="list_detail">
-          <List dummyMemo={dummyMemo} />
-          <div className="detail">
-            <input></input>
-            <div className="action">
-              <button className="update">更新</button>
-              <button className="delete">削除</button>
-            </div>
-          </div>
+          <List
+            dummyMemos={dummyMemos}
+            selected={selected}
+            onSelected={setSelected}
+          />
+          <Detail dummyMemos={dummyMemos} selected={selected} />
         </div>
       </div>
     </div>
