@@ -3,7 +3,7 @@ import "./App.css";
 
 function List({ memos, selectedId, onSelected, onAdd }) {
   const extractTitle = (memo) => memo.content.split("\n")[0];
-  const applySelectedClass = (id) => (id - 1 === selectedId ? "selected" : "");
+  const applySelectedClass = (id) => (id === selectedId ? "selected" : "");
   return (
     <div className="list">
       <ul>
@@ -11,60 +11,84 @@ function List({ memos, selectedId, onSelected, onAdd }) {
           <li
             key={memo.id}
             className={applySelectedClass(memo.id)}
-            onClick={() => onSelected(memo.id - 1)}
+            onClick={() => onSelected(memo.id)}
           >
             {extractTitle(memo)}
           </li>
         ))}
-        <li onClick={() => onAdd()}>+</li>
+        <li onClick={onAdd}>+</li>
       </ul>
     </div>
   );
 }
 
-function Detail({ inputContent, onInputChange, onUpdate }) {
+function Detail({
+  inputContent,
+  onInputChange,
+  onUpdate,
+  onDelete,
+  selectedId,
+}) {
   return (
     <div className="detail">
-      <input value={inputContent} onChange={onInputChange} />
+      <input
+        value={inputContent}
+        onChange={onInputChange}
+        disabled={!selectedId}
+      />
       <div className="action">
-        <button className="update" onClick={onUpdate}>更新</button>
-        <button className="delete">削除</button>
+        <button className="update" onClick={onUpdate} disabled={!selectedId}>
+          更新
+        </button>
+        <button className="delete" onClick={onDelete} disabled={!selectedId}>
+          削除
+        </button>
       </div>
     </div>
   );
 }
 
 function App() {
-  const dummyMemos = [
-    { id: 1, content: "memo1\n text text text" },
-    { id: 2, content: "memo2\n text text text" },
-    { id: 3, content: "memo3\n text text text" },
-  ];
-  const memosJson = JSON.stringify(dummyMemos);
-  localStorage.setItem("memos", memosJson);
-  const [selectedId, setSelectedId] = useState(0);
-  const [memos, setMemos] = useState(JSON.parse(localStorage.getItem("memos")));
-  const [inputContent, setInputContent] = useState(memos[selectedId].content);
+  localStorage.setItem("memos", []);
+  const [selectedId, setSelectedId] = useState(null);
+  const [memos, setMemos] = useState([]);
+  const [inputContent, setInputContent] = useState("");
+
   const handleAdd = () => {
-    const newMemo = { id: memos.length + 1, content: "新規メモ" };
+    const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
     const updateMemos = [...memos, newMemo];
-    const newSelectedId = updateMemos.length - 1;
+    const newSelectedId = newMemo.id;
+    setSelectedId(null);
     setMemos(updateMemos);
-    setSelectedId(newSelectedId);
-    setInputContent(updateMemos[newSelectedId].content);
+    setInputContent("");
     localStorage.setItem("memos", JSON.stringify(updateMemos));
   };
   const handleUpdate = () => {
-    const updateMemo = { id: memos[selectedId].id, content: inputContent };
-    const updateMemos = memos.map((memo, index) => {
-      return index === selectedId ? updateMemo : memo
-    })
+    if (!selectedId) return;
+    const updateMemo = {
+      id: memos.find((memo) => memo.id === selectedId).id,
+      content: inputContent,
+    };
+    const updateMemos = memos.map((memo) => {
+      return memo.id === selectedId ? updateMemo : memo;
+    });
+    setSelectedId(null);
     setMemos(updateMemos);
+    setInputContent("");
     localStorage.setItem("memos", JSON.stringify(updateMemos));
-  }
+  };
+  const handleDelete = () => {
+    if (!selectedId) return;
+    const deleteMemo = memos.find((memo) => memo.id === selectedId);
+    const updateMemos = memos.filter((memo) => memo.id !== deleteMemo.id);
+    setSelectedId(null);
+    setMemos(updateMemos);
+    setInputContent("");
+    localStorage.setItem("memos", JSON.stringify(updateMemos));
+  };
   const handleSelect = (id) => {
     setSelectedId(id);
-    setInputContent(memos[id].content);
+    setInputContent(memos.find((memo) => memo.id === id).content);
   };
   const handleInputChange = (e) => {
     setInputContent(e.target.value);
@@ -94,6 +118,8 @@ function App() {
             inputContent={inputContent}
             onInputChange={handleInputChange}
             onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            selectedId={selectedId}
           />
         </div>
       </div>

@@ -39,6 +39,7 @@ code {
     li {
       cursor: pointer;
       margin: 20px 0;
+      width: fit-content;
       &:not(.selected) {
         color: blue;
         text-decoration: underline;
@@ -65,6 +66,10 @@ code {
     margin-top: 20px;
     button {
       width: 50%;
+      cursor: pointer;
+      &:disabled {
+        cursor: not-allowed;
+      }
     }
   }
 }
