@@ -49,19 +49,20 @@ function Detail({
 }
 
 function App() {
-  localStorage.setItem("memos", []);
   const [selectedId, setSelectedId] = useState(null);
-  const [memos, setMemos] = useState([]);
+  const [memos, setMemos] = useState(() => {
+    const storedMemos = JSON.parse(localStorage.getItem("memos"));
+    return storedMemos ? storedMemos : [];
+  });
   const [inputContent, setInputContent] = useState("");
 
   const handleAdd = () => {
     const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
-    const updateMemos = [...memos, newMemo];
-    const newSelectedId = newMemo.id;
+    const newMemos = [...memos, newMemo];
     setSelectedId(null);
-    setMemos(updateMemos);
+    setMemos(newMemos);
     setInputContent("");
-    localStorage.setItem("memos", JSON.stringify(updateMemos));
+    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleUpdate = () => {
     if (!selectedId) return;
@@ -69,22 +70,22 @@ function App() {
       id: memos.find((memo) => memo.id === selectedId).id,
       content: inputContent,
     };
-    const updateMemos = memos.map((memo) => {
+    const newMemos = memos.map((memo) => {
       return memo.id === selectedId ? updateMemo : memo;
     });
     setSelectedId(null);
-    setMemos(updateMemos);
+    setMemos(newMemos);
     setInputContent("");
-    localStorage.setItem("memos", JSON.stringify(updateMemos));
+    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleDelete = () => {
     if (!selectedId) return;
     const deleteMemo = memos.find((memo) => memo.id === selectedId);
-    const updateMemos = memos.filter((memo) => memo.id !== deleteMemo.id);
+    const newMemos = memos.filter((memo) => memo.id !== deleteMemo.id);
     setSelectedId(null);
-    setMemos(updateMemos);
+    setMemos(newMemos);
     setInputContent("");
-    localStorage.setItem("memos", JSON.stringify(updateMemos));
+    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleSelect = (id) => {
     setSelectedId(id);
