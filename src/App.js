@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function List({ memos, selectedId, onSelected, onAdd }) {
@@ -64,15 +64,17 @@ function App() {
     return storedMemos ? storedMemos : [];
   });
   const [inputContent, setInputContent] = useState("");
+  const selectMemo = (id, content) => {
+    setSelectedId(id);
+    setInputContent(content);
+  };
 
   const handleAdd = () => {
     if (selectedId) return;
     const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
     const newMemos = [...memos, newMemo];
-    setSelectedId(newMemo.id);
+    selectMemo(newMemo.id, newMemo.content);
     setMemos(newMemos);
-    setInputContent(newMemo.content);
-    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleUpdate = () => {
     if (!selectedId) return;
@@ -80,35 +82,29 @@ function App() {
       id: memos.find((memo) => memo.id === selectedId).id,
       content: inputContent,
     };
-    const newMemos = memos.map((memo) => {
-      return memo.id === selectedId ? updateMemo : memo;
-    });
-    setSelectedId(null);
+    const newMemos = memos.map((memo) =>
+      memo.id === selectedId ? updateMemo : memo,
+    );
+    selectMemo(null, "");
     setMemos(newMemos);
-    setInputContent("");
-    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleDelete = () => {
     if (!selectedId) return;
-    const deleteMemo = memos.find((memo) => memo.id === selectedId);
-    const newMemos = memos.filter((memo) => memo.id !== deleteMemo.id);
-    setSelectedId(null);
+    const newMemos = memos.filter((memo) => memo.id !== selectedId);
+    selectMemo(null, "");
     setMemos(newMemos);
-    setInputContent("");
-    localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleSelect = (id, e) => {
     e.stopPropagation();
-    setSelectedId(id);
-    setInputContent(memos.find((memo) => memo.id === id).content);
+    const selectedContent = memos.find((memo) => memo.id === id).content;
+    selectMemo(id, selectedContent);
   };
-  const handleDeselect = () => {
-    setSelectedId(null);
-    setInputContent("");
-  };
-  const handleInputChange = (e) => {
-    setInputContent(e.target.value);
-  };
+  const handleDeselect = () => selectMemo(null, "");
+  const handleInputChange = (e) => setInputContent(e.target.value);
+
+  useEffect(() => {
+    localStorage.setItem("memos", JSON.stringify(memos));
+  }, [memos]);
 
   return (
     <div className="app" onClick={handleDeselect}>
