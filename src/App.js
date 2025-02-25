@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function List({ memos, selectedId, onSelected, onAdd }) {
@@ -11,12 +11,20 @@ function List({ memos, selectedId, onSelected, onAdd }) {
           <li
             key={memo.id}
             className={applySelectedClass(memo.id)}
-            onClick={() => onSelected(memo.id)}
+            onClick={(e) => onSelected(memo.id, e)}
           >
             {extractTitle(memo)}
           </li>
         ))}
-        <li onClick={onAdd}>+</li>
+        <li
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdd();
+          }}
+          className={selectedId ? "disabled" : ""}
+        >
+          +
+        </li>
       </ul>
     </div>
   );
@@ -34,6 +42,7 @@ function Detail({
       <input
         value={inputContent}
         onChange={onInputChange}
+        onClick={(e) => e.stopPropagation()}
         disabled={!selectedId}
       />
       <div className="action">
@@ -57,11 +66,12 @@ function App() {
   const [inputContent, setInputContent] = useState("");
 
   const handleAdd = () => {
+    if (selectedId) return;
     const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
     const newMemos = [...memos, newMemo];
-    setSelectedId(null);
+    setSelectedId(newMemo.id);
     setMemos(newMemos);
-    setInputContent("");
+    setInputContent(newMemo.content);
     localStorage.setItem("memos", JSON.stringify(newMemos));
   };
   const handleUpdate = () => {
@@ -87,16 +97,21 @@ function App() {
     setInputContent("");
     localStorage.setItem("memos", JSON.stringify(newMemos));
   };
-  const handleSelect = (id) => {
+  const handleSelect = (id, e) => {
+    e.stopPropagation();
     setSelectedId(id);
     setInputContent(memos.find((memo) => memo.id === id).content);
+  };
+  const handleDeselect = () => {
+    setSelectedId(null);
+    setInputContent("");
   };
   const handleInputChange = (e) => {
     setInputContent(e.target.value);
   };
 
   return (
-    <div className="app">
+    <div className="app" onClick={handleDeselect}>
       <div className="index">
         <p>一覧</p>
         <List
