@@ -21,7 +21,6 @@ const List = ({ memos, selectedId, onSelected, onAdd }) => {
             e.stopPropagation();
             onAdd();
           }}
-          className={selectedId ? "disabled" : ""}
         >
           +
         </li>

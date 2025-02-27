@@ -13,7 +13,6 @@ const useMemoManager = () => {
   };
 
   const handleAdd = () => {
-    if (selectedId) return;
     const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
     const newMemos = [...memos, newMemo];
     selectMemo(newMemo.id, newMemo.content);
