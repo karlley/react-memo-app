@@ -1,6 +1,10 @@
 import "../App.css";
 
 const List = ({ memos, selectedId, onSelected, onAdd }) => {
+  const setTitle = (memo) => {
+    const line = memo.content.split("\n")[0];
+    return line.trim() === "" ? "タイトルがありません" : line;
+  };
   return (
     <div className="list">
       <ul>
@@ -12,7 +16,7 @@ const List = ({ memos, selectedId, onSelected, onAdd }) => {
               className={isSelected ? "selected" : ""}
               onClick={(e) => onSelected(memo.id, e)}
             >
-              {memo.content.split("\n")[0]}
+              {setTitle(memo)}
             </li>
           );
         })}
