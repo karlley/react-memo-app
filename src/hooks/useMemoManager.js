@@ -12,13 +12,15 @@ const useMemoManager = () => {
     setInputContent(content);
   };
 
-  const handleAdd = () => {
+  const deselectMemo = () => selectMemo(null, "");
+
+  const addMemo = () => {
     const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
     const newMemos = [...memos, newMemo];
     selectMemo(newMemo.id, newMemo.content);
     setMemos(newMemos);
   };
-  const handleUpdate = () => {
+  const updateMemo = () => {
     if (!selectedId) return;
     const updateMemo = {
       id: memos.find((memo) => memo.id === selectedId).id,
@@ -27,21 +29,21 @@ const useMemoManager = () => {
     const newMemos = memos.map((memo) =>
       memo.id === selectedId ? updateMemo : memo,
     );
-    selectMemo(null, "");
+    deselectMemo();
     setMemos(newMemos);
   };
-  const handleDelete = () => {
+  const deleteMemo = () => {
     if (!selectedId) return;
     const newMemos = memos.filter((memo) => memo.id !== selectedId);
-    selectMemo(null, "");
+    deselectMemo();
     setMemos(newMemos);
   };
-  const handleSelect = (id, e) => {
+
+  const handleSelectMemo = (id, e) => {
     e.stopPropagation();
     const selectedContent = memos.find((memo) => memo.id === id).content;
     selectMemo(id, selectedContent);
   };
-  const handleDeselect = () => selectMemo(null, "");
   const handleInputChange = (e) => setInputContent(e.target.value);
 
   useEffect(() => {
@@ -52,11 +54,11 @@ const useMemoManager = () => {
     selectedId,
     memos,
     inputContent,
-    handleAdd,
-    handleUpdate,
-    handleDelete,
-    handleSelect,
-    handleDeselect,
+    addMemo,
+    updateMemo,
+    deleteMemo,
+    deselectMemo,
+    handleSelectMemo,
     handleInputChange,
   };
 };

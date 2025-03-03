@@ -8,23 +8,23 @@ function App() {
     selectedId,
     memos,
     inputContent,
-    handleAdd,
-    handleUpdate,
-    handleDelete,
-    handleSelect,
-    handleDeselect,
+    addMemo,
+    updateMemo,
+    deleteMemo,
+    deselectMemo,
+    handleSelectMemo,
     handleInputChange,
   } = useMemoManager();
 
   return (
-    <div className="app" onClick={handleDeselect}>
+    <div className="app" onClick={deselectMemo}>
       <div className="index">
         <p>一覧</p>
         <List
           memos={memos}
           selectedId={selectedId}
-          onSelected={handleSelect}
-          onAdd={handleAdd}
+          onSelect={handleSelectMemo}
+          onAdd={addMemo}
         />
       </div>
       <div className="edit">
@@ -33,14 +33,14 @@ function App() {
           <List
             memos={memos}
             selectedId={selectedId}
-            onSelected={handleSelect}
-            onAdd={handleAdd}
+            onSelect={handleSelectMemo}
+            onAdd={addMemo}
           />
           <Detail
             inputContent={inputContent}
             onInputChange={handleInputChange}
-            onUpdate={handleUpdate}
-            onDelete={handleDelete}
+            onUpdate={updateMemo}
+            onDelete={deleteMemo}
             selectedId={selectedId}
           />
         </div>

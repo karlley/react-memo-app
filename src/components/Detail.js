@@ -1,11 +1,11 @@
 import "../App.css";
 
 const Detail = ({
+  selectedId,
   inputContent,
-  onInputChange,
   onUpdate,
   onDelete,
-  selectedId,
+  onInputChange,
 }) => {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
