@@ -8,8 +8,8 @@ const Detail = ({
   onInputChange,
 }) => {
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <div className="detail">
+    <div className="detail">
+      <form onSubmit={(e) => e.preventDefault()}>
         <textarea
           value={inputContent}
           onChange={onInputChange}
@@ -24,8 +24,8 @@ const Detail = ({
             削除
           </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
