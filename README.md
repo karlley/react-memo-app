@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# React Memo App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Create React Appを使用したメモアプリです。
 
-## Available Scripts
+## 起動
 
-In the project directory, you can run:
+以下コマンドでアプリを起動できます。
 
-### `npm start`
+```
+cd react-memo-app
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 機能
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+主な機能は以下の4つです。
 
-### `npm test`
+- メモ作成
+- メモ詳細表示
+- メモ更新
+- メモ削除
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### メモ作成
 
-### `npm run build`
+`+` ボタンを押下すると新規メモが作成されます。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### メモ詳細表示
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+作成したメモをクリックするとテキストフィールドにメモの詳細が表示されます。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### メモ更新
 
-### `npm run eject`
+メモ選択状態でテキストフィールドでテキストを変更後、`更新` ボタンを押下するとメモの内容を更新できます。
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### メモ削除
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+メモ選択状態で`削除` ボタンを押下すると選択中のメモを削除できます。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 仕様
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- メモのタイトルはメモの内容の1行目がタイトルに設定されます。
+  - タイトル未設定時は`タイトルがありません` が表示されます。
+- 各機能の実行後のメモの選択状態は以下のように変化します。
+  - メモ作成: 新規メモ作成後、作成したメモが選択されます。
+  - メモ更新: メモ更新後、メモは未選択状態になります。
+  - メモ削除: メモ削除後、メモは未選択状態になります。
+- メモ一覧、テキストフィールド以外をクリックするとメモは未選択状態になります。
+- メモ未選択状態でメモの更新と削除はできません。
+- メモの編集途中でもメモの作成は可能です。
