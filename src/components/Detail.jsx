@@ -7,9 +7,19 @@ const Detail = ({
   onDelete,
   onInputChange,
 }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const action = e.nativeEvent.submitter?.name;
+    if (action === "update") {
+      onUpdate();
+    } else if (action === "delete") {
+      onDelete();
+    }
+  };
+
   return (
     <div className="detail">
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <textarea
           value={inputContent}
           onChange={onInputChange}
@@ -17,10 +27,22 @@ const Detail = ({
           disabled={!selectedId}
         />
         <div className="action">
-          <button className="update" onClick={onUpdate} disabled={!selectedId}>
+          <button
+            className="update"
+            type="submit"
+            name="update"
+            onClick={(e) => e.stopPropagation()}
+            disabled={!selectedId}
+          >
             更新
           </button>
-          <button className="delete" onClick={onDelete} disabled={!selectedId}>
+          <button
+            className="delete"
+            type="submit"
+            name="delete"
+            onClick={(e) => e.stopPropagation()}
+            disabled={!selectedId}
+          >
             削除
           </button>
         </div>
