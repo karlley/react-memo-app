@@ -1,8 +1,8 @@
 import "../App.css";
 
 const List = ({ memos, selectedId, onSelect, onAdd }) => {
-  const setTitle = (memo) => {
-    const line = memo.content.split("\n")[0];
+  const setTitle = (content) => {
+    const line = content.split("\n")[0];
     return line.trim() === "" ? "タイトルがありません" : line;
   };
   return (
@@ -14,9 +14,12 @@ const List = ({ memos, selectedId, onSelect, onAdd }) => {
             <li
               key={memo.id}
               className={isSelected ? "selected" : ""}
-              onClick={(e) => onSelect(memo.id, e)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect(memo.id);
+              }}
             >
-              {setTitle(memo)}
+              {setTitle(memo.content)}
             </li>
           );
         })}

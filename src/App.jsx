@@ -8,11 +8,14 @@ function App() {
   const { memos, addMemo, updateMemo, deleteMemo } = useMemoManager();
   const [selectedId, setSelectedId] = useState(null);
   const [inputContent, setInputContent] = useState("");
-  const handleSelect = (id, e) => {
-    e.stopPropagation();
+  const handleSelect = (id) => {
     setSelectedId(id);
     const content = memos.find((memo) => memo.id === id).content;
     setInputContent(content);
+  };
+  const resetMemoSelection = () => {
+    setSelectedId(null);
+    setInputContent("");
   };
   const handleInputChange = (e) => setInputContent(e.target.value);
   const handleAddMemo = () => {
@@ -22,17 +25,15 @@ function App() {
   };
   const handleUpdateMemo = () => {
     updateMemo(selectedId, inputContent);
-    setSelectedId(null);
-    setInputContent("");
+    resetMemoSelection();
   };
   const handleDeleteMemo = () => {
     deleteMemo(selectedId);
-    setSelectedId(null);
-    setInputContent("");
+    resetMemoSelection();
   };
 
   return (
-    <div className="app" onClick={() => setSelectedId(null)}>
+    <div className="app" onClick={resetMemoSelection}>
       <div className="index">
         <p>一覧</p>
         <List
