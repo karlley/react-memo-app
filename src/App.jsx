@@ -1,63 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useMemoManager from "./hooks/useMemoManager";
 import Detail from "./components/Detail";
 import List from "./components/List";
 import "./App.css";
 
 function App() {
-  const [memos, setMemos] = useState(() => {
-    const storedMemos = JSON.parse(localStorage.getItem("memos"));
-    return storedMemos ? storedMemos : [];
-  });
+  const { memos, addMemo, updateMemo, deleteMemo } = useMemoManager();
   const [selectedId, setSelectedId] = useState(null);
   const [inputContent, setInputContent] = useState("");
-  const selectMemo = (id, content) => {
+  const handleSelect = (id, e) => {
+    e.stopPropagation();
     setSelectedId(id);
+    const content = memos.find((memo) => memo.id === id).content;
     setInputContent(content);
   };
-  const deselectMemo = () => selectMemo(null, "");
-  const addMemo = () => {
-    const newMemo = { id: crypto.randomUUID(), content: "新規メモ" };
-    const newMemos = [...memos, newMemo];
-    selectMemo(newMemo.id, newMemo.content);
-    setMemos(newMemos);
-  };
-  const updateMemo = () => {
-    if (!selectedId) return;
-    const updateMemo = {
-      id: memos.find((memo) => memo.id === selectedId).id,
-      content: inputContent,
-    };
-    const newMemos = memos.map((memo) =>
-      memo.id === selectedId ? updateMemo : memo,
-    );
-    deselectMemo();
-    setMemos(newMemos);
-  };
-  const deleteMemo = () => {
-    if (!selectedId) return;
-    const newMemos = memos.filter((memo) => memo.id !== selectedId);
-    deselectMemo();
-    setMemos(newMemos);
-  };
-  const handleSelectMemo = (id, e) => {
-    e.stopPropagation();
-    const selectedContent = memos.find((memo) => memo.id === id).content;
-    selectMemo(id, selectedContent);
-  };
   const handleInputChange = (e) => setInputContent(e.target.value);
-  useEffect(() => {
-    localStorage.setItem("memos", JSON.stringify(memos));
-  }, [memos]);
+  const handleAddMemo = () => {
+    const newMemo = addMemo();
+    setSelectedId(newMemo.id);
+    setInputContent(newMemo.content);
+  };
+  const handleUpdateMemo = () => {
+    updateMemo(selectedId, inputContent);
+    setSelectedId(null);
+    setInputContent("");
+  };
+  const handleDeleteMemo = () => {
+    deleteMemo(selectedId);
+    setSelectedId(null);
+    setInputContent("");
+  };
 
   return (
-    <div className="app" onClick={deselectMemo}>
+    <div className="app" onClick={() => setSelectedId(null)}>
       <div className="index">
         <p>一覧</p>
         <List
           memos={memos}
           selectedId={selectedId}
-          onSelect={handleSelectMemo}
-          onAdd={addMemo}
+          onSelect={handleSelect}
+          onAdd={handleAddMemo}
         />
       </div>
       <div className="edit">
@@ -66,15 +48,15 @@ function App() {
           <List
             memos={memos}
             selectedId={selectedId}
-            onSelect={handleSelectMemo}
-            onAdd={addMemo}
+            onSelect={handleSelect}
+            onAdd={handleAddMemo}
           />
           <Detail
+            selectedId={selectedId}
             inputContent={inputContent}
             onInputChange={handleInputChange}
-            onUpdate={updateMemo}
-            onDelete={deleteMemo}
-            selectedId={selectedId}
+            onUpdate={handleUpdateMemo}
+            onDelete={handleDeleteMemo}
           />
         </div>
       </div>
