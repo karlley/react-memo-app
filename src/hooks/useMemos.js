@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useMemoManager = () => {
+const useMemos = () => {
   const [memos, setMemos] = useState(() => {
     const storedMemos = JSON.parse(localStorage.getItem("memos"));
     return storedMemos ? storedMemos : [];
@@ -35,4 +35,4 @@ const useMemoManager = () => {
   };
 };
 
-export default useMemoManager;
+export default useMemos;

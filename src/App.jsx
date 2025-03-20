@@ -1,11 +1,11 @@
 import { useState } from "react";
-import useMemoManager from "./hooks/useMemoManager";
+import useMemos from "./hooks/useMemos";
 import Detail from "./components/Detail";
 import List from "./components/List";
 import "./App.css";
 
 function App() {
-  const { memos, addMemo, updateMemo, deleteMemo } = useMemoManager();
+  const { memos, addMemo, updateMemo, deleteMemo } = useMemos();
   const [selectedId, setSelectedId] = useState(null);
   const [inputContent, setInputContent] = useState("");
   const handleSelect = (id) => {
