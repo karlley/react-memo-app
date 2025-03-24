@@ -35,7 +35,10 @@ function App() {
   return (
     <div className="app" onClick={resetMemoSelection}>
       <div className="index">
-        <p>一覧</p>
+        <div className="header">
+          <h2>一覧</h2>
+          <p className="loginStatus">未ログイン</p>
+        </div>
         <List
           memos={memos}
           selectedId={selectedId}
@@ -44,7 +47,7 @@ function App() {
         />
       </div>
       <div className="edit">
-        <p>編集</p>
+        <h2>編集</h2>
         <div className="list_detail">
           <List
             memos={memos}

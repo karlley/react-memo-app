@@ -1,18 +1,25 @@
 .app {
   width: 500px;
-}
-
-.index {
-  .list {
-    border: 1px solid;
+  .index {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .loginStatus {
+        color: gray;
+        font-weight: bold;
+      }
+    }
+    .list {
+      border: 1px solid;
+    }
   }
-}
-
-.edit {
-  .list_detail {
-    border: 1px solid;
-    display: flex;
-    justify-content: space-between;
+  .edit {
+    .list_detail {
+      border: 1px solid;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 
@@ -46,6 +53,15 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  .login {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    button {
+      padding: 0px 20px;
+      border-radius: 5px;
+    }
+  }
   textarea {
     padding: 0;
     height: 100px;

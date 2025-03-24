@@ -9,6 +9,9 @@ const Detail = ({
 }) => {
   return (
     <div className="detail">
+      <div className="login">
+        <button>ログイン</button>
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
