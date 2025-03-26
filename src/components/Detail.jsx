@@ -6,11 +6,21 @@ const Detail = ({
   onUpdate,
   onDelete,
   onInputChange,
+  isLoggedIn,
+  onLogin,
 }) => {
   return (
     <div className="detail">
       <div className="login">
-        <button>ログイン</button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onLogin();
+          }}
+        >
+          {isLoggedIn ? "ログアウト" : "ログイン"}
+        </button>
       </div>
       <form
         onSubmit={(e) => {
@@ -22,9 +32,9 @@ const Detail = ({
           value={inputContent}
           onChange={onInputChange}
           onClick={(e) => e.stopPropagation()}
-          disabled={!selectedId}
+          disabled={!selectedId || !isLoggedIn}
         />
-        <div className="action">
+        <div className={isLoggedIn ? "action" : "action disabled"}>
           <button
             className="update"
             type="submit"

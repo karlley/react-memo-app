@@ -1,6 +1,6 @@
 import "../App.css";
 
-const List = ({ memos, selectedId, onSelect, onAdd }) => {
+const List = ({ memos, selectedId, onSelect, onAdd, isLoggedIn }) => {
   const setTitle = (content) => {
     const line = content.split("\n")[0];
     return line.trim() === "" ? "タイトルがありません" : line;
@@ -24,6 +24,7 @@ const List = ({ memos, selectedId, onSelect, onAdd }) => {
           );
         })}
         <li
+          className={isLoggedIn ? "" : "disabled"}
           onClick={(e) => {
             e.stopPropagation();
             onAdd();
