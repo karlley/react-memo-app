@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import useMemos from "./hooks/useMemos";
+import { LoginContext } from "./contexts/LoginContext";
 import Detail from "./components/Detail";
 import List from "./components/List";
 import "./App.css";
 
 function App() {
   const { memos, addMemo, updateMemo, deleteMemo } = useMemos();
+  const { isLoggedIn } = useContext(LoginContext);
   const [selectedId, setSelectedId] = useState(null);
   const [inputContent, setInputContent] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedIsLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
-    return storedIsLoggedIn || false;
-  });
 
   const handleSelect = (id) => {
     setSelectedId(id);
@@ -39,12 +37,6 @@ function App() {
     deleteMemo(selectedId);
     resetMemoSelection();
   };
-  const handleLogin = () => {
-    setIsLoggedIn((prev) => !prev);
-  };
-  useEffect(() => {
-    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
-  }, [isLoggedIn]);
 
   return (
     <div className="app" onClick={resetMemoSelection}>
@@ -60,7 +52,6 @@ function App() {
           selectedId={selectedId}
           onSelect={handleSelect}
           onAdd={handleAddMemo}
-          isLoggedIn={isLoggedIn}
         />
       </div>
       <div className="edit">
@@ -71,7 +62,6 @@ function App() {
             selectedId={selectedId}
             onSelect={handleSelect}
             onAdd={handleAddMemo}
-            isLoggedIn={isLoggedIn}
           />
           <Detail
             selectedId={selectedId}
@@ -79,8 +69,6 @@ function App() {
             onInputChange={handleInputChange}
             onUpdate={handleUpdateMemo}
             onDelete={handleDeleteMemo}
-            isLoggedIn={isLoggedIn}
-            onLogin={handleLogin}
           />
         </div>
       </div>

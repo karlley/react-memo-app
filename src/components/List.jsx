@@ -1,6 +1,9 @@
+import { useContext } from "react";
+import { LoginContext } from "../contexts/LoginContext";
 import "../App.css";
 
-const List = ({ memos, selectedId, onSelect, onAdd, isLoggedIn }) => {
+const List = ({ memos, selectedId, onSelect, onAdd }) => {
+  const { isLoggedIn } = useContext(LoginContext);
   const setTitle = (content) => {
     const line = content.split("\n")[0];
     return line.trim() === "" ? "タイトルがありません" : line;

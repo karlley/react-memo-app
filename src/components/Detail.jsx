@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { LoginContext } from "../contexts/LoginContext";
 import "../App.css";
 
 const Detail = ({
@@ -6,9 +8,10 @@ const Detail = ({
   onUpdate,
   onDelete,
   onInputChange,
-  isLoggedIn,
-  onLogin,
 }) => {
+  const { isLoggedIn, login } = useContext(LoginContext);
+  const handleLogin = () => login();
+
   return (
     <div className="detail">
       <div className="login">
@@ -16,7 +19,7 @@ const Detail = ({
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            onLogin();
+            handleLogin();
           }}
         >
           {isLoggedIn ? "ログアウト" : "ログイン"}
