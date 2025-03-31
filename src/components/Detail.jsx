@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { LoginContext } from "../contexts/LoginContext";
+import { useLogin } from "../hooks/useLogin";
 import "../App.css";
 
 const Detail = ({
@@ -9,7 +8,7 @@ const Detail = ({
   onDelete,
   onInputChange,
 }) => {
-  const { isLoggedIn, login } = useContext(LoginContext);
+  const { isLoggedIn, login } = useLogin();
   const handleLogin = () => login();
 
   return (

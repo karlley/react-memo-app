@@ -1,13 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import useMemos from "./hooks/useMemos";
-import { LoginContext } from "./contexts/LoginContext";
+import { useLogin } from "./hooks/useLogin";
 import Detail from "./components/Detail";
 import List from "./components/List";
 import "./App.css";
 
 function App() {
   const { memos, addMemo, updateMemo, deleteMemo } = useMemos();
-  const { isLoggedIn } = useContext(LoginContext);
+  const { isLoggedIn } = useLogin();
   const [selectedId, setSelectedId] = useState(null);
   const [inputContent, setInputContent] = useState("");
 

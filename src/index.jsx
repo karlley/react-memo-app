@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { LoginProvider } from "./hooks/useLogin";
 import App from "./App";
-import { LoginProvider } from "./contexts/LoginContext";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

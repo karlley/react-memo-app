@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 
-export const LoginContext = createContext({
+const LoginContext = createContext({
   isLoggedIn: false,
   login: () => {},
 });
@@ -24,3 +24,5 @@ export const LoginProvider = ({ children }) => {
     </LoginContext.Provider>
   );
 };
+
+export const useLogin = () => useContext(LoginContext);
