@@ -8,8 +8,8 @@ const Detail = ({
   onDelete,
   onInputChange,
 }) => {
-  const { isLoggedIn, login } = useLogin();
-  const handleLogin = () => login();
+  const { isLoggedIn, toggleLogin } = useLogin();
+  const handleLogin = () => toggleLogin();
 
   return (
     <div className="detail">

@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 
 const LoginContext = createContext({
   isLoggedIn: false,
-  login: () => {},
+  toggleLogin: () => {},
 });
 
 export const LoginProvider = ({ children }) => {
@@ -10,7 +10,7 @@ export const LoginProvider = ({ children }) => {
     const storedIsLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
     return storedIsLoggedIn || false;
   });
-  const login = () => {
+  const toggleLogin = () => {
     setIsLoggedIn((prev) => !prev);
   };
 
@@ -19,7 +19,7 @@ export const LoginProvider = ({ children }) => {
   }, [isLoggedIn]);
 
   return (
-    <LoginContext.Provider value={{ isLoggedIn, login }}>
+    <LoginContext.Provider value={{ isLoggedIn, toggleLogin }}>
       {children}
     </LoginContext.Provider>
   );
