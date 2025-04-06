@@ -1,3 +1,4 @@
+import { useLogin } from "../hooks/LoginProvider";
 import "../App.css";
 
 const Detail = ({
@@ -7,8 +8,22 @@ const Detail = ({
   onDelete,
   onInputChange,
 }) => {
+  const { isLoggedIn, toggleLogin } = useLogin();
+  const handleLogin = () => toggleLogin();
+
   return (
     <div className="detail">
+      <div className="login">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleLogin();
+          }}
+        >
+          {isLoggedIn ? "ログアウト" : "ログイン"}
+        </button>
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -19,9 +34,9 @@ const Detail = ({
           value={inputContent}
           onChange={onInputChange}
           onClick={(e) => e.stopPropagation()}
-          disabled={!selectedId}
+          disabled={!selectedId || !isLoggedIn}
         />
-        <div className="action">
+        <div className={isLoggedIn ? "action" : "action disabled"}>
           <button
             className="update"
             type="submit"
