@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { LoginProvider } from "./hooks/useLogin";
+import { LoginProvider } from "./hooks/LoginProvider";
 import App from "./App";
 import "./index.css";
 
